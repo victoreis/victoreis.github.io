@@ -91,14 +91,20 @@
 <link rel="stylesheet" href="./assets/css/main.css">
 
 <style>
-  /* Keep the profile photo visually unchanged on hover. */
-  .author__avatar img,
-  .author__avatar img:hover,
-  .author__avatar:hover img,
-  img.author__avatar:hover {
+  /* Keep the profile photo visually identical in normal and hover states. */
+  .sidebar .author__avatar,
+  .sidebar .author__avatar:hover,
+  .sidebar .author__avatar img,
+  .sidebar .author__avatar img:hover,
+  .sidebar .author__avatar:hover img,
+  .sidebar img.author__avatar,
+  .sidebar img.author__avatar:hover {
+    opacity: 1 !important;
     filter: none !important;
     -webkit-filter: none !important;
-    opacity: 1 !important;
+    transition: none !important;
+    -webkit-transition: none !important;
+    mix-blend-mode: normal !important;
   }
 </style>
 
@@ -174,9 +180,9 @@
 
 <div itemscope itemtype="http://schema.org/Person">
 
-  <div class="author__avatar">
+  <div class="author__avatar" style="opacity:1 !important; filter:none !important; -webkit-filter:none !important; transition:none !important; mix-blend-mode:normal !important;">
     
-    	<img src="./images/profile.jpg" class="author__avatar" alt="Victor Reis">
+    	<img src="./images/profile.jpg" class="author__avatar" alt="Victor Reis" style="opacity:1 !important; filter:none !important; -webkit-filter:none !important; transition:none !important; mix-blend-mode:normal !important;">
     
   </div>
 
