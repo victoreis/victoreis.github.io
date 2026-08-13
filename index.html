@@ -91,20 +91,13 @@
 <link rel="stylesheet" href="./assets/css/main.css">
 
 <style>
-  /* Keep the profile photo visually identical in normal and hover states. */
-  .sidebar .author__avatar,
-  .sidebar .author__avatar:hover,
-  .sidebar .author__avatar img,
-  .sidebar .author__avatar img:hover,
-  .sidebar .author__avatar:hover img,
-  .sidebar img.author__avatar,
-  .sidebar img.author__avatar:hover {
+  /* The theme fades the entire sidebar to 75% opacity until it is hovered.
+     Keep it at full opacity so the profile photo never changes appearance. */
+  .sidebar,
+  .sidebar:hover {
     opacity: 1 !important;
-    filter: none !important;
-    -webkit-filter: none !important;
-    transition: none !important;
     -webkit-transition: none !important;
-    mix-blend-mode: normal !important;
+    transition: none !important;
   }
 </style>
 
@@ -180,9 +173,9 @@
 
 <div itemscope itemtype="http://schema.org/Person">
 
-  <div class="author__avatar" style="opacity:1 !important; filter:none !important; -webkit-filter:none !important; transition:none !important; mix-blend-mode:normal !important;">
+  <div class="author__avatar">
     
-    	<img src="./images/profile.jpg" class="author__avatar" alt="Victor Reis" style="opacity:1 !important; filter:none !important; -webkit-filter:none !important; transition:none !important; mix-blend-mode:normal !important;">
+    	<img src="./images/profile.jpg" class="author__avatar" alt="Victor Reis">
     
   </div>
 
