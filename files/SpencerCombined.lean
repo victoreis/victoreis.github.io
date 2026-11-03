@@ -1152,7 +1152,8 @@ theorem lemma_3_5 {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℝ)
     have h := rowPotential_contDiffAt hs (hg i)
     have hp : ContDiffAt ℝ 2 (fun t : ℝ => (s-b*t^2,a i+t*w i)) 0 := by fun_prop
     have hh : ContDiffAt ℝ 2 rowPotential (s-b*0^2,a i+0*w i) := by simpa [s,a] using h
-    exact hh.comp 0 hp
+    exact ContDiffAt.comp (g := rowPotential)
+      (f := fun t : ℝ => (s-b*t^2,a i+t*w i)) 0 hh hp
   have hd := second_deriv_finite_sum f
     (fun i => (phiDD (a i/Real.sqrt s)*(w i)^2-psi (a i/Real.sqrt s)*b)/s^2)
     hf (fun i => row_potential_second hs (hg i))
@@ -1271,6 +1272,8 @@ theorem feasibleSet_compact {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℝ) (D : �
     simpa only [InCube, abs_le, mem_Icc] using hc
   have hclosed : IsClosed {z : Fin n → ℝ |
       0 ≤ residualScale z ∧ ∀ i, A.mulVec z i ≤ D} := by
+    change IsClosed ({z : Fin n → ℝ | 0 ≤ residualScale z} ∩
+      {z : Fin n → ℝ | ∀ i, A.mulVec z i ≤ D})
     apply (isClosed_le continuous_const continuous_residualScale).inter
     change IsClosed {z | ∀ i, A.mulVec z i ≤ D}
     rw [ofPred_forall]
@@ -1464,7 +1467,9 @@ theorem smoothPotential_contDiffAt {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℝ)
   have hp : ContDiffAt ℝ 2 (fun y : Fin n → ℝ => (residualScale y,D-A.mulVec y i)) z := by
     unfold residualScale residual Matrix.mulVec dotProduct
     fun_prop
-  exact (rowPotential_contDiffAt hs (hg i)).comp z hp
+  exact ContDiffAt.comp (g := rowPotential)
+    (f := fun y : Fin n → ℝ => (residualScale y,D-A.mulVec y i)) z
+    (rowPotential_contDiffAt hs (hg i)) hp
 
 theorem second_deriv_nonneg_of_local_min {f : ℝ → ℝ} {a : ℝ}
     (hmin : IsLocalMin f a) (hc : ContinuousAt f a) : 0 ≤ deriv (deriv f) a := by
@@ -2252,7 +2257,7 @@ noncomputable def prependPoint {n : ℕ} (c : ℝ) (x : EuclideanSpace ℝ (Fin 
 noncomputable def cubePoint {n : ℕ} (b : Fin n → Bool) : EuclideanSpace ℝ (Fin n) :=
   WithLp.toLp 2 (fun j => bitSign (b j))
 
-def coordinateSlice {n : ℕ} (K : Set (EuclideanSpace ℝ (Fin (n+1)))) (c : ℝ) :
+noncomputable def coordinateSlice {n : ℕ} (K : Set (EuclideanSpace ℝ (Fin (n+1)))) (c : ℝ) :
     Set (EuclideanSpace ℝ (Fin n)) := prependPoint c ⁻¹' K
 
 theorem prependPoint_affine {n : ℕ} (c a b : ℝ) (hab : a+b = 1)
@@ -4674,3 +4679,7 @@ theorem theorem_1_1 : LowerBoundClaim := lowerBoundClaim_proof
 theorem theorem_1_2 : UpperBoundClaim := upperBoundClaim_proof
 
 end Stoc393
+
+-- Completion checks: neither main theorem should depend on sorryAx.
+#print axioms Stoc393.theorem_1_1
+#print axioms Stoc393.theorem_1_2
